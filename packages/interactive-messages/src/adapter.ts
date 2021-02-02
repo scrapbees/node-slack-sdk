@@ -1,5 +1,5 @@
 /* tslint:disable import-name */
-import http, { RequestListener, Agent } from 'http';
+import { Server, RequestListener, Agent } from 'http';
 import axios, { AxiosInstance } from 'axios';
 import isString from 'lodash.isstring';
 import isRegExp from 'lodash.isregexp';
@@ -121,7 +121,7 @@ export class SlackMessageAdapter {
 
   private callbacks: [StoredConstraints, Callback][];
   private axios: AxiosInstance;
-  private server?: http.Server;
+  private server?: Server;
 
   /**
    * Create a message adapter.
@@ -176,7 +176,7 @@ export class SlackMessageAdapter {
    *   options requests to this message adapter instance. See
    *   https://nodejs.org/dist/latest/docs/api/http.html#http_class_http_server
    */
-  public async createServer(): Promise<http.Server> {
+  public async createServer(): Promise<Server> {
     // TODO: more options (like https)
     return http.createServer(this.requestListener());
   }
@@ -187,7 +187,7 @@ export class SlackMessageAdapter {
    *
    * @returns A promise that resolves once the server is ready
    */
-  public start(port: number): Promise<http.Server> {
+  public start(port: number): Promise<Server> {
     return this.createServer()
       .then(server => new Promise((resolve, reject) => {
         this.server = server;
